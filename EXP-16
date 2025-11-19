@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+int main() {
+    int m, n;
+    printf("Enter rows and columns: ");
+    scanf("%d %d", &m, &n);
+
+    int board[50][50], next[50][50];
+
+    printf("Enter the board values:\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &board[i][j]);
+        }
+    }
+    int dirs[8][2] = {
+        {1,0}, {-1,0}, {0,1}, {0,-1},
+        {1,1}, {1,-1}, {-1,1}, {-1,-1}
+    };
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            int live = 0;
+            for (int k = 0; k < 8; k++) {
+                int r = i + dirs[k][0];
+                int c = j + dirs[k][1];
+
+                if (r >= 0 && r < m && c >= 0 && c < n)
+                    live += board[r][c];
+            }
+            if (board[i][j] == 1) {
+                if (live < 2) next[i][j] = 0;  
+                else if (live == 2 || live == 3) next[i][j] = 1; 
+                else next[i][j] = 0;        
+            } else {
+                if (live == 3) next[i][j] = 1;
+                else next[i][j] = 0;
+            }
+        }
+    }
+    printf("Next State:\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%d ", next[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
