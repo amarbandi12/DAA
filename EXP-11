@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+int main() {
+    int m, n, N, start_i, start_j;
+    printf("Enter m n N start_i start_j: ");
+    scanf("%d %d %d %d %d", &m, &n, &N, &start_i, &start_j);
+
+    long dp[m][n], temp[m][n];
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            dp[i][j] = 0;
+
+    dp[start_i][start_j] = 1; 
+    long result = 0;
+
+    for (int step = 1; step <= N; step++) {
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                temp[i][j] = 0;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                long ways = dp[i][j];
+                if (ways > 0) {
+                    if (i == 0) result += ways;
+                    else temp[i - 1][j] += ways;
+                    if (i == m - 1) result += ways;
+                    else temp[i + 1][j] += ways;
+                    if (j == 0) result += ways;
+                    else temp[i][j - 1] += ways;
+                    if (j == n - 1) result += ways;
+                    else temp[i][j + 1] += ways;
+                }
+            }
+        }
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                dp[i][j] = temp[i][j];
+    }
+    printf("Number of ways: %ld\n", result);
+    return 0;
+}
