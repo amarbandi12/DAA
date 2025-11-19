@@ -1,0 +1,31 @@
+#include <stdio.h>
+double champagneTower(int poured, int query_row, int query_glass) {
+    double tower[101][101] = {0};
+    tower[0][0] = poured;
+
+    for (int i = 0; i < 100; i++) {
+        for (int j = 0; j <= i; j++) {
+            if (tower[i][j] > 1.0) {
+                double overflow = tower[i][j] - 1.0;
+                tower[i][j] = 1.0;
+                tower[i+1][j]     += overflow / 2.0;
+                tower[i+1][j + 1] += overflow / 2.0;
+            }
+        }
+    }
+    if (tower[query_row][query_glass] > 1.0)
+        return 1.0;
+    return tower[query_row][query_glass];
+}
+int main() {
+    int poured, query_row, query_glass;
+    printf("Enter poured amount: ");
+    scanf("%d", &poured);
+    printf("Enter query row: ");
+    scanf("%d", &query_row);
+    printf("Enter query glass: ");
+    scanf("%d", &query_glass);
+    double result = champagneTower(poured, query_row, query_glass);
+    printf("The glass contains: %.5f\n", result);
+    return 0;
+}
